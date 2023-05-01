@@ -42,22 +42,6 @@
 # 
 # Konkurs będzie dostępny na Kaggle - link do [konkursu](https://www.kaggle.com/t/0dcd1f5e99fa4cd98db2451e636de318).  
 # 
-# ### Rejestracja
-# 
-# Jeśli jeszcze nie masz konta na Kaggle, to proszę [załóż konto](https://www.kaggle.com/).
-# 
-# Kaggle to jest największa społeczność uczenia maszynowego na świecie (póki co DataWorkshop jest tylko w Polsce, ale to pewnie się zmieni ;)). Dlatego jeśli chcesz zająć się tym na poważnie, zainspirować się lub od czasu do czasu brać udział w konkursach na Kaggle, to polecam założyć tam konto ;)
-# 
-# ### Regulamin
-# 
-# 1. Konkurs rozpoczyna się **23 marca 2023 r** i kończy się w niedzielę, **2 kwietnia 2023 r. o 23:59** (Warszawa).
-# 2. Osoba, która będzie na pierwszym miejscu dostaje nagrodę - Gravitrax, za drugie i trzecie miejsca będą kubki termiczne z logo DataWorkshop. Miejsca będą widoczne na Leader Board przez cały czas trwania konkursu.
-# 3. Zbiór danych został podzielony na dwie części: publiczny i prywatny. Publiczny zbiór danych zawiera cechy + odpowiedź, prywatny zbiór tylko cechy. Należy zrobić predykcję na prywatnym zbiorze i wysłać na Kaggle. Gdy skończy się konkurs, to ostateczny wynik będzie na zbiorze prywatnym.
-# 4. Dane są przygotowane w celach edukacyjnych, zakazane jest ich używanie w innym celu niż ten kurs oraz zakazane jest upublicznianie danych w dowolny sposób. Rozwiązanie ma być oparte tylko i wyłączenie przy użyciu uczenia maszynowego (trenowanie modelu na podstawie udostępnionych danych). Nie ma co kombinować, skup się na nauce :).
-# 5. W tym konkursie nie można łączyć się w drużyny. Każdy uczestnik może dodać rozwiązanie (czyli zrobić tak zwany *submit*) do 5 prób rozwiązań w jeden dzień (dlatego warto zacząć wcześniej, będzie więcej prób).
-# 6. Osoby, które zajmą 1, 2 oraz 3 miejsca opublikują wszystkim swoje rozwiązanie (w przeciągu tygodnia po wygranej) i udostępnią je podając link na Slacku.
-# 7. Nagroda będzie wysłana do 2 tygodni na terenie Polski od przekazania nam danych do dostrczenia paczki. 
-# 
 # 
 # ### Dane
 # 
@@ -66,21 +50,6 @@
 # - test (**33 170** wierszy)
 # 
 # Twoim zadaniem jest zrobić predykcje dla zbioru testowego.
-# 
-# 
-# Jak robisz `submit` na Kaggle, to jest wyliczany wynik. Zwróć uwagę, że wynik jest wyliczany tylko na 30% danych testowych i ten wynik jest widoczny na tak zwanym "Public Leader Board". Gdy konkurs się skończy, wynik będzie przeliczony na wszystkich dostępnych danych testowych i będzie dostępny na tak zwanym "Private Leader Board". Dlaczego tak się robi? Chodzi o to, że Twoje rozwiązanie powinno być jak najbardziej stabilne na jak namniejszej jak i większej próbce danych. Dlatego musisz uważnie robić walidację, bo pierwsze miejsce na Public Leader Board nie musi być pierwszym na Private Leader Board :) Uważaj na to!
-# 
-# 
-# ## Nagroda
-# 
-# ### Gravitrax - pierwsze miejsce
-# ![Gravitrax](../images/gravitrax.jpg)
-# 
-# ### Kubek termiczny za 2 i 3 miejsce
-# <div style="width: 700px; height: 500px; margin: 10px auto;">
-#     <img src="../images/cup.png" style="height: 400px; float: left; " />
-#     <img src="../images/cup.png" style="height: 400px; float: right;" />
-# </div>
 
 # In[1]:
 
@@ -136,94 +105,6 @@ train.info()
 # - 24 kolumny z nazwami lekarstw (**metformin, repaglinide, nateglinide, chlorpropamide, glimepiride, acetohexamide, glipizide, glyburide, tolbutamide, pioglitazone, rosiglitazone, acarbose, miglitol, troglitazone, tolazamide, examide, sitagliptin, insulin, glyburide-metformin, glipizide-metformin, glimepiride-pioglitazone, metformin-rosiglitazone, metformin-pioglitazone**) - Mówi o tym czy dawka na dane lekarstwo została zwiększona, zmniejszona, czy pozostała bez zmian, lub czy w ogóle nie było recepty na to lekarstwo
 # - **readmitted** - Czy w ciągu 30 dni pacjent był ponownie skierowany do hospitalizacji
 # - **id** - Unikalne id obserwacji (potrzebne do Kaggle)
-
-# ## 🤖 Basic Model
-
-# In[3]:
-
-
-feats = ['encounter_id']
-X = train[feats].values
-y = train['readmitted'].values
-
-model = DummyClassifier(strategy="uniform")
-model.fit(X, y)
-y_pred = model.predict(X)
-
-fbeta_score(y, y_pred, beta=1.5)
-
-
-# Piewszy wynik jest **31%**. Teraz przygotujmy dane dla `submit`'u!
-# 
-# W tym celu należy wczytać dane ze zbioru testowego: `../input/diabetic_test.h5`.
-# 
-# ## 👀 Prognoza `submit`
-
-# In[4]:
-
-
-test = pd.read_hdf('../input/diabetic_test.h5')
-X = test[feats].values
-
-y_pred = model.predict(X)
-
-
-# In[5]:
-
-
-train.shape, test.shape
-
-
-# In[6]:
-
-
-test['readmitted'] = y_pred
-test[ ['id', 'readmitted'] ].to_csv('../output/submit_dummy_model.csv', index=False) 
-
-
-# ## ☝️ Przygotowanie pliku, który możesz dodać na Kaggle 
-# 
-# Trzeba przygotować plik, który będzie zawierał: `id` i `readmitted`, następnie zaloguj się na Kaggle, wejdź na stronę konkursu i dodaj swój wynik :). Koniecznie napisz na Slacku, że już "pierwsze koty za płoty" :). 🐱
-
-# In[ ]:
-
-
-## Dane
-
-W celach optymalizacji szereg column (poniżej) zawierają wartości. Tu możesz zobaczyć słownik, który był użyty `{'No': 0, 'Steady': 1, 'Up': 2, 'Down': 3}`
-- `metformin`
-- `repaglinide`
-- `nateglinide`
-- `chlorpropamide`
-- `glimepiride`
-- `acetohexamide`
-- `glipizide`
-- `glyburide`
-- `tolbutamide`
-- `pioglitazone`
-- `rosiglitazone`
-- `acarbose`
-- `miglitol`
-- `troglitazone`
-- `tolazamide`
-- `examide`
-- `citoglipton`
-- `insulin`
-- `glyburide-metformin`
-- `glipizide-metformin`
-- `glimepiride-pioglitazone`
-- `metformin-rosiglitazone`
-- `metformin-pioglitazone`
-
-Teraz czas na kodowanie...
-
-
-# ![](../images/submit_dummy.png)
-
-# Teraz już zastosuj swoją wiedzę, którą masz.
-# Spróbuj znaleźć lepsze cechy, lepszy model i lepsze parametry.
-# 
-# Powodzenia!
 
 # In[45]:
 
@@ -649,17 +530,3 @@ y_pred = (y_pred_proba > threshold).astype("int8")
 
 test['readmitted'] = y_pred
 test[ ['id', 'readmitted'] ].to_csv('../output/submit_ctb_treshold0.15.csv', index=False)
-
-
-# ## 🧠 Przydatne linki
-# 1. [A Look at Precision, Recall, and F1-Score](https://towardsdatascience.com/a-look-at-precision-recall-and-f1-score-36b5fd0dd3ec)
-# 2. [Beyond the F-1 score: A look at the F-beta score](https://medium.com/@douglaspsteen/beyond-the-f-1-score-a-look-at-the-f-beta-score-3743ac2ef6e3)
-
-# ## ⭐ Dlaczego warto wykonać to zadanie?
-# 
-# Potraktuj to zadanie jako budowanie rozwiązania, które może trafić do Twojego portfolio :) 
-# To bardzo ważne, aby umieć przekuć wiedzę zdobytą w kursie umieć przekuć na rozwiązanie konkretnego problemu z pomocą uczenia maszynowego. To nie musi być doskonałe. Ważne, aby to zrobić i umieć to pokazać. 
-# 
-# Większość absolwentów naszych kursów stwierdziła, że to właśnie konkurs podczas kursu, czy samodzielna praca pozwoliła im uporządkować wiedzę, którą zdobyli i w ciągu kilku dni niesamowicie posunać się do przodu. 
-# 
-# Początki będą ciężkie i mogą być demotywujące, ale regularność działania pomoże Ci to przejść, a efekatmi będziesz zaskoczona/y. 
