@@ -1,48 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # 🔥 Konkurs & projekt do Twojego portfolio 
-# 
-# 
-# ### Celem jest poświęcić więcej czasu na  samodzielną pracę, mieć w swoim portfolio prototyp modelu ML rozwiązujący bardzo konkretny problem i przy okazji dobrze się bawić :)  
-# 
-# #### 🕵️‍♀️ Kontekst wyzwania 
-# 
-# Opieka medyczna rozwija się, a przynajmniej próbuje i w związku z tym pojawiają się różne programy, które to napędzają. Teraz dotkniemy tematu leczenia przecukrzenia ([hiperglikemii](https://pl.wikipedia.org/wiki/Hiperglikemia)). Na przykład w Stanach Zjednoczonych jest taki program [Hospital Readmission Reduction Program (HRRP)](https://www.cms.gov/Medicare/Quality-Initiatives-Patient-Assessment-Instruments/Value-Based-Programs/HRRP/Hospital-Readmission-Reduction-Program.html), dzięki któremu próbuje się minimalziować refundację dla szpitali o ponadprzeciętnej readmisji. Dla tych szpitali, które są obecnie karane w ramach tego programu, jednym z rozwiązań jest stworzenie interwencji w celu zapewnienia dodatkowej pomocy pacjentom o zwiększonym ryzyku readmisji. 
-# 
-# ❓ Pytanie jednak jest takie: jak rozpoznać takich pacjentów? No właśnie tutaj może przyjść z pomocą uczenie maszynowe. Tym zajmiemy się w tym konkursie.
-# 
-# ![](../images/competitions2019.png)
-# 
-# Zbadajmy kontekst, jak duży jest problem w Polsce (w Stanach jeszcze jest gorzej). 
-# 
-# 
-# W Polsce ponad 3 miliony osób chorujących na cukrzycę (~9% populacji). 90% zachorowań dotyczy cukrzycy typu 2, której można zapobiegać! Szacuje się, że w 2035 r. na świecie liczba chorych na cukrzycę będzie wynosić około 592 miliony.😱
-# 
-# 
-# 
-# ## ❓ Czym jest cukrzyca?
-# 
-# Cukrzyca jest chorobą charakteryzującą się „podwyższonym stężeniem cukru (glukozy) we krwi”. Przyczyną przecukrzeń jest brak insuliny wynikający z uszkodzenia komórek beta trzustki – czytamy w „Narodowym Programie Przeciwdziałania Chorobom Cywilizacyjnym” opracowanym przez Ministerstwo Zdrowia.
-# 
-# 
-# ## ❓ Na czym polega konkurs?
-# 
-# 
 # Twoim celem jest przewidzieć, **czy pacjent z cukrzycą zostanie odesłany do szpitala w ciągu 30 dni**, czyli kolumna `readmitted`. 
 # - 0 oznacza, że nie ->  osoba nie została odesłana do szpitala w ciągu 30 dni
 # - 1 oznacza tak -> był odesłany do szpitala w ciągu 30 dni 
-# 
-# 
-# ### ⭐ Metryka sukcesu
-# 
-# Naszą metryką będzie **F1.5**. To oznacza, że będzie bardziej czułe dla `recall`, niż `precision`.
-# 
-# ### Kaggle
-# 
 # Konkurs będzie dostępny na Kaggle - link do [konkursu](https://www.kaggle.com/t/0dcd1f5e99fa4cd98db2451e636de318).  
-# 
-# 
 # ### Dane
 # 
 # W danych jest **66 221** wierszy, które zostały podzielone prawie na równe cześci:
